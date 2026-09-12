@@ -335,6 +335,8 @@ namespace PDMStepExporter
             // chkFuzzy
             // 
             this.chkFuzzy.AutoSize = true;
+            this.chkFuzzy.Checked = true;
+            this.chkFuzzy.CheckState = System.Windows.Forms.CheckState.Checked;
             this.chkFuzzy.ForeColor = System.Drawing.Color.FromArgb(51, 51, 51);
             this.chkFuzzy.Location = new System.Drawing.Point(92, 212);
             this.chkFuzzy.Name = "chkFuzzy";

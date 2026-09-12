@@ -137,7 +137,7 @@ namespace PDMStepExporter
                 if (!string.IsNullOrEmpty(v)) txtOutputDir.Text = v;
 
                 chkUseInputName.Checked = GetBoolCfg(kv, "UseInputName", true);
-                chkFuzzy.Checked = GetBoolCfg(kv, "FuzzyMatch", false);
+                chkFuzzy.Checked = GetBoolCfg(kv, "FuzzyMatch", true);
                 chkRecurse.Checked = GetBoolCfg(kv, "Recursive", true);
                 chkGetLatest.Checked = GetBoolCfg(kv, "GetLatest", true);
                 chkCloseSw.Checked = GetBoolCfg(kv, "CloseSwAfterExport", true);
