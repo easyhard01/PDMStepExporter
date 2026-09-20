@@ -1,20 +1,20 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">x64</Platform>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{8E4B1C2A-3D5F-4E6A-9B7C-1F2A3B4C5D6E}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <RootNamespace>PDMStepExporter</RootNamespace>
-    <AssemblyName>PDMStepExporter</AssemblyName>
+    <AssemblyName>kingdee.BOS.XPF.APP</AssemblyName>
     <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <Deterministic>true</Deterministic>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x64' ">
-    <PlatformTarget>x64</PlatformTarget>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <Prefer32Bits>false</Prefer32Bits><PlatformTarget>AnyCPU</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -23,8 +23,8 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x64' ">
-    <PlatformTarget>x64</PlatformTarget>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <Prefer32Bits>false</Prefer32Bits><PlatformTarget>AnyCPU</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
@@ -42,27 +42,22 @@
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
     <!--
-      SolidWorks 2018 互操作程序集（如果下面的路径与你的安装位置不一致，
-      请在解决方案资源管理器中删除这两个引用，然后：
-      右键项目 -> 添加引用 -> 浏览 -> 定位到
-      C:\Program Files\SOLIDWORKS Corp\SOLIDWORKS\api\redist\
-      选择 SolidWorks.Interop.sldworks.dll 与 SolidWorks.Interop.swconst.dll。
-    -->
+      SolidWorks 2018 浜掓搷浣滅▼搴忛泦锛堝鏋滀笅闈㈢殑璺緞涓庝綘鐨勫畨瑁呬綅缃笉涓€鑷达紝
+      璇峰湪瑙ｅ喅鏂规璧勬簮绠＄悊鍣ㄤ腑鍒犻櫎杩欎袱涓紩鐢紝鐒跺悗锛?      鍙抽敭椤圭洰 -> 娣诲姞寮曠敤 -> 娴忚 -> 瀹氫綅鍒?      C:\Program Files\SOLIDWORKS Corp\SOLIDWORKS\api\redist\
+      閫夋嫨 SolidWorks.Interop.sldworks.dll 涓?SolidWorks.Interop.swconst.dll銆?    -->
     <Reference Include="SolidWorks.Interop.sldworks">
-      <HintPath>C:\Program Files\SOLIDWORKS Corp\SOLIDWORKS\api\redist\SolidWorks.Interop.sldworks.dll</HintPath>
+      <HintPath>lib\SolidWorks.Interop.sldworks.dll</HintPath>
       <EmbedInteropTypes>False</EmbedInteropTypes>
     </Reference>
     <Reference Include="SolidWorks.Interop.swconst">
-      <HintPath>C:\Program Files\SOLIDWORKS Corp\SOLIDWORKS\api\redist\SolidWorks.Interop.swconst.dll</HintPath>
+      <HintPath>lib\SolidWorks.Interop.swconst.dll</HintPath>
       <EmbedInteropTypes>False</EmbedInteropTypes>
     </Reference>
     <!--
-      EPDM 主互操作程序集（官方推荐直接引用 EPDM.Interop.epdm.dll）：
-      如果路径不一致，请删除后在“添加引用 -> 浏览”中重新选择该 dll，
-      并确保其属性“嵌入互操作类型”为 False。
-    -->
+      EPDM 涓讳簰鎿嶄綔绋嬪簭闆嗭紙瀹樻柟鎺ㄨ崘鐩存帴寮曠敤 EPDM.Interop.epdm.dll锛夛細
+      濡傛灉璺緞涓嶄竴鑷达紝璇峰垹闄ゅ悗鍦ㄢ€滄坊鍔犲紩鐢?-> 娴忚鈥濅腑閲嶆柊閫夋嫨璇?dll锛?      骞剁‘淇濆叾灞炴€р€滃祵鍏ヤ簰鎿嶄綔绫诲瀷鈥濅负 False銆?    -->
     <Reference Include="EPDM.Interop.epdm">
-      <HintPath>C:\Program Files\SOLIDWORKS Corp\SOLIDWORKS PDM\EPDM.Interop.epdm.dll</HintPath>
+      <HintPath>lib\EPDM.Interop.epdm.dll</HintPath>
       <EmbedInteropTypes>False</EmbedInteropTypes>
     </Reference>
   </ItemGroup>
@@ -86,3 +81,4 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
+

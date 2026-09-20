@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Runtime.InteropServices;
@@ -422,6 +422,81 @@ namespace PDMStepExporter
             if (string.IsNullOrEmpty(fileName)) return false;
             string ext = Path.GetExtension(fileName).ToLowerInvariant();
             return ext == ".sldprt" || ext == ".sldasm";
+        }
+
+        /// <summary>
+        /// 根据 3D 文件本地路径，在 PDM 中查找同名 PDF 文件并 Get 到本地视图。
+        /// </summary>
+        public string FindAndGetPdf(string sldLocalPath, long parentFolderId, bool forceLatest, out string error)
+        {
+            error = "";
+            if (string.IsNullOrEmpty(sldLocalPath))
+            {
+                error = "3D文件路径为空。";
+                return null;
+            }
+
+            string pdfPath = Path.ChangeExtension(sldLocalPath, ".pdf");
+            string diag = "";
+
+            int pdfFileId = 0;
+            int pdfParentId = (int)parentFolderId;
+
+            // 强类型调用 GetFileFromPath（签名：GetFileFromPath(string, out IEdmFolder5)）
+            try
+            {
+                IEdmFolder5 pdfFolder;
+                IEdmFile5 pdfFile = _vault7.GetFileFromPath(pdfPath, out pdfFolder);
+                if (pdfFile != null)
+                {
+                    pdfFileId = pdfFile.ID;
+                    if (pdfFolder != null) pdfParentId = pdfFolder.ID;
+                }
+            }
+            catch (Exception ex)
+            {
+                diag = "GetFileFromPath: " + ex.Message;
+            }
+
+            // 备选：用 GetObject 按 ID 获取（需要知道文件ID，这里不可用）
+            // 备选：直接检查本地文件
+            if (pdfFileId <= 0)
+            {
+                if (File.Exists(pdfPath)) return pdfPath;
+                error = "未找到PDF(" + diag + ")";
+                return null;
+            }
+
+            // 本地已有副本且不需要强制最新，直接返回
+            if (!forceLatest && File.Exists(pdfPath))
+            {
+                return pdfPath;
+            }
+
+            // 用 IEdmBatchGet Get PDF 最新版
+            try
+            {
+                IEdmVault7 vault7 = _vault7 ?? (IEdmVault7)_vault;
+                IEdmBatchGet batchGet = (IEdmBatchGet)vault7.CreateUtility(EdmUtility.EdmUtil_BatchGet);
+                EdmSelItem[] selItems = new EdmSelItem[1];
+                selItems[0].mlDocID = pdfFileId;
+                selItems[0].mlProjID = pdfParentId;
+                batchGet.AddSelection((EdmVault5)_vault, ref selItems);
+                int hwnd = 0;
+                try { hwnd = System.Diagnostics.Process.GetCurrentProcess().MainWindowHandle.ToInt32(); } catch { }
+                batchGet.CreateTree(hwnd, (int)EdmGetCmdFlags.Egcf_IncludeAutoCacheFiles);
+                batchGet.GetFiles(hwnd, null);
+            }
+            catch (Exception ex)
+            {
+                error = "PDF Get失败: " + ex.Message;
+                if (File.Exists(pdfPath)) return pdfPath;
+                return null;
+            }
+
+            if (File.Exists(pdfPath)) return pdfPath;
+            error = "PDF Get后本地仍不存在: " + pdfPath;
+            return null;
         }
     }
 }

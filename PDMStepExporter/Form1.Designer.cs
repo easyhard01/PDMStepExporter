@@ -1,4 +1,4 @@
-namespace PDMStepExporter
+﻿namespace PDMStepExporter
 {
     partial class Form1
     {
@@ -76,6 +76,8 @@ namespace PDMStepExporter
             this.btnExportAll = new PDMStepExporter.FlatButton();
             this.btnCopySel = new PDMStepExporter.FlatButton();
             this.btnCopyAll = new PDMStepExporter.FlatButton();
+            this.btnPdfSel = new PDMStepExporter.FlatButton();
+            this.btnPdfAll = new PDMStepExporter.FlatButton();
             this.lblProgress = new System.Windows.Forms.Label();
             this.pgbProgress = new PDMStepExporter.PurpleProgressBar();
             this.logRich = new System.Windows.Forms.RichTextBox();
@@ -601,14 +603,16 @@ namespace PDMStepExporter
             this.panelBottom.Controls.Add(this.btnExportAll);
             this.panelBottom.Controls.Add(this.btnCopySel);
             this.panelBottom.Controls.Add(this.btnCopyAll);
+            this.panelBottom.Controls.Add(this.btnPdfSel);
+            this.panelBottom.Controls.Add(this.btnPdfAll);
             this.panelBottom.Controls.Add(this.lblProgress);
             this.panelBottom.Controls.Add(this.pgbProgress);
             this.panelBottom.Controls.Add(this.logRich);
             this.panelBottom.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.panelBottom.Location = new System.Drawing.Point(0, 564);
+            this.panelBottom.Location = new System.Drawing.Point(0, 492);
             this.panelBottom.Name = "panelBottom";
             this.panelBottom.Padding = new System.Windows.Forms.Padding(14, 8, 14, 8);
-            this.panelBottom.Size = new System.Drawing.Size(1080, 232);
+            this.panelBottom.Size = new System.Drawing.Size(1080, 300);
             this.panelBottom.TabIndex = 2;
             // 
             // lblOut
@@ -651,7 +655,7 @@ namespace PDMStepExporter
             this.chkUseInputName.Checked = true;
             this.chkUseInputName.CheckState = System.Windows.Forms.CheckState.Checked;
             this.chkUseInputName.ForeColor = System.Drawing.Color.FromArgb(51, 51, 51);
-            this.chkUseInputName.Location = new System.Drawing.Point(14, 48);
+            this.chkUseInputName.Location = new System.Drawing.Point(14, 40);
             this.chkUseInputName.Name = "chkUseInputName";
             this.chkUseInputName.Size = new System.Drawing.Size(232, 21);
             this.chkUseInputName.TabIndex = 3;
@@ -665,7 +669,7 @@ namespace PDMStepExporter
             this.chkGetLatest.Checked = true;
             this.chkGetLatest.CheckState = System.Windows.Forms.CheckState.Checked;
             this.chkGetLatest.ForeColor = System.Drawing.Color.FromArgb(51, 51, 51);
-            this.chkGetLatest.Location = new System.Drawing.Point(330, 48);
+            this.chkGetLatest.Location = new System.Drawing.Point(330, 40);
             this.chkGetLatest.Name = "chkGetLatest";
             this.chkGetLatest.Size = new System.Drawing.Size(164, 21);
             this.chkGetLatest.TabIndex = 4;
@@ -679,7 +683,7 @@ namespace PDMStepExporter
             this.chkCloseSw.Checked = true;
             this.chkCloseSw.CheckState = System.Windows.Forms.CheckState.Checked;
             this.chkCloseSw.ForeColor = System.Drawing.Color.FromArgb(51, 51, 51);
-            this.chkCloseSw.Location = new System.Drawing.Point(510, 48);
+            this.chkCloseSw.Location = new System.Drawing.Point(510, 40);
             this.chkCloseSw.Name = "chkCloseSw";
             this.chkCloseSw.Size = new System.Drawing.Size(176, 21);
             this.chkCloseSw.TabIndex = 7;
@@ -690,7 +694,7 @@ namespace PDMStepExporter
             // btnExportSel
             // 
             this.btnExportSel.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btnExportSel.Location = new System.Drawing.Point(14, 84);
+            this.btnExportSel.Location = new System.Drawing.Point(14, 70);
             this.btnExportSel.Name = "btnExportSel";
             this.btnExportSel.Primary = false;
             this.btnExportSel.Size = new System.Drawing.Size(150, 36);
@@ -702,7 +706,7 @@ namespace PDMStepExporter
             // 
             this.btnExportAll.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btnExportAll.Font = new System.Drawing.Font("Microsoft YaHei UI", 9.5F, System.Drawing.FontStyle.Bold);
-            this.btnExportAll.Location = new System.Drawing.Point(172, 84);
+            this.btnExportAll.Location = new System.Drawing.Point(172, 70);
             this.btnExportAll.Name = "btnExportAll";
             this.btnExportAll.Primary = true;
             this.btnExportAll.Size = new System.Drawing.Size(150, 36);
@@ -713,7 +717,7 @@ namespace PDMStepExporter
             // btnCopySel
             // 
             this.btnCopySel.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btnCopySel.Location = new System.Drawing.Point(14, 124);
+            this.btnCopySel.Location = new System.Drawing.Point(14, 112);
             this.btnCopySel.Name = "btnCopySel";
             this.btnCopySel.Primary = false;
             this.btnCopySel.Size = new System.Drawing.Size(150, 30);
@@ -724,7 +728,7 @@ namespace PDMStepExporter
             // btnCopyAll
             // 
             this.btnCopyAll.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btnCopyAll.Location = new System.Drawing.Point(172, 124);
+            this.btnCopyAll.Location = new System.Drawing.Point(172, 112);
             this.btnCopyAll.Name = "btnCopyAll";
             this.btnCopyAll.Primary = false;
             this.btnCopyAll.Size = new System.Drawing.Size(150, 30);
@@ -732,11 +736,33 @@ namespace PDMStepExporter
             this.btnCopyAll.Text = "复制全部源文件";
             this.btnCopyAll.Click += new System.EventHandler(this.btnCopyAll_Click);
             // 
+            // btnPdfSel
+            // 
+            this.btnPdfSel.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnPdfSel.Location = new System.Drawing.Point(14, 154);
+            this.btnPdfSel.Name = "btnPdfSel";
+            this.btnPdfSel.Primary = false;
+            this.btnPdfSel.Size = new System.Drawing.Size(150, 30);
+            this.btnPdfSel.TabIndex = 12;
+            this.btnPdfSel.Text = "导出选中PDF图纸";
+            this.btnPdfSel.Click += new System.EventHandler(this.btnPdfSel_Click);
+            // 
+            // btnPdfAll
+            // 
+            this.btnPdfAll.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnPdfAll.Location = new System.Drawing.Point(172, 154);
+            this.btnPdfAll.Name = "btnPdfAll";
+            this.btnPdfAll.Primary = false;
+            this.btnPdfAll.Size = new System.Drawing.Size(150, 30);
+            this.btnPdfAll.TabIndex = 13;
+            this.btnPdfAll.Text = "导出全部PDF图纸";
+            this.btnPdfAll.Click += new System.EventHandler(this.btnPdfAll_Click);
+            // 
             // lblProgress
             // 
             this.lblProgress.AutoSize = true;
             this.lblProgress.ForeColor = System.Drawing.Color.FromArgb(138, 111, 158);
-            this.lblProgress.Location = new System.Drawing.Point(340, 92);
+            this.lblProgress.Location = new System.Drawing.Point(14, 200);
             this.lblProgress.Name = "lblProgress";
             this.lblProgress.Size = new System.Drawing.Size(32, 17);
             this.lblProgress.TabIndex = 7;
@@ -747,7 +773,7 @@ namespace PDMStepExporter
             this.pgbProgress.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
                         | System.Windows.Forms.AnchorStyles.Right)));
             this.pgbProgress.Font = new System.Drawing.Font("Microsoft YaHei UI", 8.5F);
-            this.pgbProgress.Location = new System.Drawing.Point(440, 88);
+            this.pgbProgress.Location = new System.Drawing.Point(100, 196);
             this.pgbProgress.Name = "pgbProgress";
             this.pgbProgress.Size = new System.Drawing.Size(626, 20);
             this.pgbProgress.TabIndex = 8;
@@ -759,11 +785,11 @@ namespace PDMStepExporter
             this.logRich.BackColor = System.Drawing.Color.FromArgb(250, 247, 253);
             this.logRich.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.logRich.Font = new System.Drawing.Font("Consolas", 9F);
-            this.logRich.Location = new System.Drawing.Point(14, 160);
+            this.logRich.Location = new System.Drawing.Point(14, 228);
             this.logRich.Name = "logRich";
             this.logRich.ReadOnly = true;
             this.logRich.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.Vertical;
-            this.logRich.Size = new System.Drawing.Size(1052, 56);
+            this.logRich.Size = new System.Drawing.Size(1052, 58);
             this.logRich.TabIndex = 9;
             this.logRich.Text = "";
             // 
@@ -803,7 +829,7 @@ namespace PDMStepExporter
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             this.AcceptButton = this.btnSearch;
             this.BackColor = System.Drawing.Color.FromArgb(244, 238, 249);
-            this.ClientSize = new System.Drawing.Size(1080, 760);
+            this.ClientSize = new System.Drawing.Size(1080, 828);
             this.Controls.Add(this.splitMain);
             this.Controls.Add(this.panelBottom);
             this.Controls.Add(this.panelHeader);
@@ -883,6 +909,8 @@ namespace PDMStepExporter
         private PDMStepExporter.FlatButton btnExportAll;
         private PDMStepExporter.FlatButton btnCopySel;
         private PDMStepExporter.FlatButton btnCopyAll;
+        private PDMStepExporter.FlatButton btnPdfSel;
+        private PDMStepExporter.FlatButton btnPdfAll;
         private System.Windows.Forms.Label lblProgress;
         private PDMStepExporter.PurpleProgressBar pgbProgress;
         private System.Windows.Forms.RichTextBox logRich;

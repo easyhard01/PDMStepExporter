@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Configuration;
@@ -37,6 +37,7 @@ namespace PDMStepExporter
             public bool UseInputName;
             public bool GetLatest;
             public bool CloseSw;
+            public bool ExportPdf;
         }
 
         public Form1()
@@ -263,6 +264,8 @@ namespace PDMStepExporter
             btnExportAll.Enabled = !busy;
             btnCopySel.Enabled = !busy;
             btnCopyAll.Enabled = !busy;
+            btnPdfSel.Enabled = !busy;
+            btnPdfAll.Enabled = !busy;
             txtInput.Enabled = !busy;
             cboVault.Enabled = !busy;
             txtUser.Enabled = !busy;
@@ -762,7 +765,7 @@ namespace PDMStepExporter
                 Log("请先在结果列表中选择要复制的行。", Theme.ErrColor);
                 return;
             }
-            StartCopy(list);
+            StartCopy(list, false);
         }
 
         private void btnCopyAll_Click(object sender, EventArgs e)
@@ -785,10 +788,49 @@ namespace PDMStepExporter
                 Log("当前没有可复制的匹配结果。", Theme.ErrColor);
                 return;
             }
-            StartCopy(list);
+            StartCopy(list, false);
         }
 
-        private void StartCopy(List<EdmSearchItem> list)
+        private void btnPdfSel_Click(object sender, EventArgs e)
+        {
+            List<EdmSearchItem> list = new List<EdmSearchItem>();
+            foreach (DataGridViewRow row in dgvResults.SelectedRows)
+            {
+                EdmSearchItem it = row.Tag as EdmSearchItem;
+                if (it != null) list.Add(it);
+            }
+            if (list.Count == 0)
+            {
+                Log("请先在右侧列表勾选要导出PDF的条目。", Theme.ErrColor);
+                return;
+            }
+            StartCopy(list, true);
+        }
+
+        private void btnPdfAll_Click(object sender, EventArgs e)
+        {
+            List<EdmSearchItem> list = new List<EdmSearchItem>();
+            if (chkFirstOnly.Checked)
+            {
+                HashSet<string> seen = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+                foreach (EdmSearchItem it in _items)
+                {
+                    if (seen.Add(it.InputTerm)) list.Add(it);
+                }
+            }
+            else
+            {
+                foreach (EdmSearchItem it in _items) list.Add(it);
+            }
+            if (list.Count == 0)
+            {
+                Log("当前没有可导出PDF的匹配结果。", Theme.ErrColor);
+                return;
+            }
+            StartCopy(list, true);
+        }
+
+        private void StartCopy(List<EdmSearchItem> list, bool exportPdf)
         {
             if (_searchRunning || _exportRunning) return;
 
@@ -821,11 +863,12 @@ namespace PDMStepExporter
             SetBusy(true);
             pgbProgress.SetRange(0, copyable.Count);
             pgbProgress.Value = 0;
-            Log("开始复制 " + copyable.Count + " 个源文件 → " + outDir + "（无需 SolidWorks）", Theme.TextMain);
+            Log((exportPdf ? "开始导出 " : "开始复制 ") + copyable.Count + (exportPdf ? " 个PDF图纸 → " : " 个源文件 → ") + outDir + (exportPdf ? "（根据3D文件定位PDF）" : "（无需 SolidWorks）"), Theme.TextMain);
 
             ExportOptions opt = new ExportOptions();
             opt.UseInputName = chkUseInputName.Checked;
             opt.GetLatest = chkGetLatest.Checked;
+            opt.ExportPdf = exportPdf;
             bwCopy.RunWorkerAsync(new object[] { copyable, outDir, opt });
         }
 
@@ -870,15 +913,33 @@ namespace PDMStepExporter
                         continue;
                     }
 
+                    string srcPath = it.LocalPath;
+                    string srcFileName = it.FileName;
+
+                    // PDF 模式：根据3D文件定位PDF并Get
+                    if (opt.ExportPdf)
+                    {
+                        string pdfErr;
+                        string pdfPath = _edm.FindAndGetPdf(it.LocalPath, it.ParentFolderId, getLatest, out pdfErr);
+                        if (string.IsNullOrEmpty(pdfPath) || !File.Exists(pdfPath))
+                        {
+                            skipCount++;
+                            bwCopy.ReportProgress(i, new object[] { it, "跳过：" + (string.IsNullOrEmpty(pdfErr) ? "PDF未找到" : pdfErr), false });
+                            continue;
+                        }
+                        srcPath = pdfPath;
+                        srcFileName = Path.GetFileName(pdfPath);
+                    }
+
                     // 2) 计算目标文件名（自动避开重名）
-                    string ext = Path.GetExtension(it.FileName);
-                    string baseName = useInputName ? it.InputTerm : Path.GetFileNameWithoutExtension(it.FileName);
+                    string ext = Path.GetExtension(srcFileName);
+                    string baseName = useInputName ? it.InputTerm : Path.GetFileNameWithoutExtension(srcFileName);
                     baseName = SanitizeFileName(baseName);
-                    if (baseName.Length == 0) baseName = Path.GetFileNameWithoutExtension(it.FileName);
+                    if (baseName.Length == 0) baseName = Path.GetFileNameWithoutExtension(srcFileName);
                     string destPath = UniquePath(Path.Combine(outDir, baseName + ext));
 
-                    // 3) 直接复制文件
-                    File.Copy(it.LocalPath, destPath, true);
+                    // 3) 复制文件
+                    File.Copy(srcPath, destPath, true);
                     okCount++;
                     bwCopy.ReportProgress(i, new object[] { it, "OK → " + Path.GetFileName(destPath), true });
                 }

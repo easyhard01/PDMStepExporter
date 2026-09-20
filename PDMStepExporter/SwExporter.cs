@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.IO;
 using System.Runtime.InteropServices;
 using SolidWorks.Interop.sldworks;
@@ -65,7 +65,7 @@ namespace PDMStepExporter
                 if (tPref == null || tAp == null) return;
                 object prefVal = Enum.Parse(tPref, "swStepFormat");
                 object apVal = Enum.Parse(tAp, "swStepAP214");
-                _sw.SetUserPreferenceInteger((int)prefVal, (int)apVal);
+                ((dynamic)_sw).SetUserPreferenceInteger((int)prefVal, (int)apVal);
             }
             catch (Exception)
             {
